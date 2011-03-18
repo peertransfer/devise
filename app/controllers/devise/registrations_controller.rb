@@ -33,7 +33,10 @@ class Devise::RegistrationsController < ApplicationController
 
   # GET /resource/edit
   def edit
-    render_with_scope :edit
+    respond_with(resource) do |format|
+      format.any(*navigational_formats) {}
+      format.html { render_with_scope :edit }
+    end
   end
 
   # PUT /resource

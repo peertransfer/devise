@@ -205,7 +205,13 @@ class RegistrationTest < ActionController::IntegrationTest
     user = sign_in_as_user
     put user_registration_path(:format => 'xml'), :user => { :current_password => '123456', :email => 'user.new@test.com' }
     assert_response :success
-    assert_equal user.reload.email, 'user.new@test.com'
+  end
+
+  test 'a user retriew his information should return the information in XML' do
+    user = sign_in_as_user
+    get edit_user_registration_path(:format => 'xml')
+    assert_response :success
+    assert response.body.include? %(<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>)
   end
 
   test 'a user update information with invalid data in XML format should return invalid response' do
